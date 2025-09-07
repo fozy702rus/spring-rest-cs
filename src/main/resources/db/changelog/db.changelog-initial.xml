@@ -1,0 +1,72 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="DAVLET (generated)" id="1757247074082-1">
+        <createTable tableName="customer">
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_details_guid" type="UUID"/>
+            <column name="country_guid" type="UUID"/>
+            <column name="customer_guid" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="customer_pkey"/>
+            </column>
+            <column name="profile_ref_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="DAVLET (generated)" id="1757247074082-2">
+        <addUniqueConstraint columnNames="contact_details_guid" constraintName="customer_contact_details_guid_key" tableName="customer"/>
+    </changeSet>
+    <changeSet author="DAVLET (generated)" id="1757247074082-3">
+        <createTable tableName="contactdetails">
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_details_guid" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="contactdetails_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="telegram_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="DAVLET (generated)" id="1757247074082-4">
+        <createTable tableName="country">
+            <column name="code" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_guid" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="country_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="DAVLET (generated)" id="1757247074082-5">
+        <addForeignKeyConstraint baseColumnNames="contact_details_guid" baseTableName="customer" constraintName="fkco5uklyo6cem35h0y6kpkmdm1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="contact_details_guid" referencedTableName="contactdetails" validate="true"/>
+    </changeSet>
+    <changeSet author="DAVLET (generated)" id="1757247074082-6">
+        <addForeignKeyConstraint baseColumnNames="country_guid" baseTableName="customer" constraintName="fkgbp1h045sa7vx7wq95yaiidh2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="country_guid" referencedTableName="country" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
