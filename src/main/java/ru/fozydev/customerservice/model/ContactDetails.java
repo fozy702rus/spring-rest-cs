@@ -22,11 +22,9 @@ public class ContactDetails {
     @Column(name = "contact_details_guid", nullable = false)
     private UUID contactDetailsId;
 
-    @Email
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Pattern(regexp = "^@([A-Za-z0-9_]{5,32})$")
     @Column(name = "telegram_id")
     private String telegramId;
 

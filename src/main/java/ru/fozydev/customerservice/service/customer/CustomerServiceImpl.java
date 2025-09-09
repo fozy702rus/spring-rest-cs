@@ -56,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         // country
         Country country = countryRepository.findById(dto.getCountryDTO().getCountryId())
-                .orElseThrow(() -> new RuntimeException("Country id not found when create"));
+                .orElseThrow(() -> new RuntimeException("Country with id " + dto.getCountryDTO().getCountryId() + " not found"));
         customer.setCountry(country);
 
         // contactDetails
@@ -76,7 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         // ищем по id нуба
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer id not found when update"));
+                .orElseThrow(() -> new RuntimeException("Customer with id" + customerId + " not found"));
         // customer info
         if (dto.getCustomerDTO() != null) {
             Optional.ofNullable(dto.getCustomerDTO().getName()).ifPresent(customer::setName);
@@ -86,7 +86,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (dto.getCountryDTO() != null) {
             Optional.ofNullable(dto.getCountryDTO().getCountryId()).ifPresent(countryId -> {
                 Country country = countryRepository.findById(countryId)
-                        .orElseThrow(() -> new RuntimeException("Country id not found when update"));
+                        .orElseThrow(() -> new RuntimeException("Country with id" + countryId + " not found"));
                 customer.setCountry(country);
             });
         }

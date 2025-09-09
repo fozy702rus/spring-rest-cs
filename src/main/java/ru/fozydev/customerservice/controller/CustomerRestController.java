@@ -1,5 +1,6 @@
 package ru.fozydev.customerservice.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +50,7 @@ public class CustomerRestController {
     }
 
     @PostMapping
-    public CustomerResponseDTO createCustomer(@RequestBody CustomerCreateRequest dto) {
+    public CustomerResponseDTO createCustomer(@Valid @RequestBody CustomerCreateRequest dto) {
         return customerService.createCustomer(dto);
     }
 
