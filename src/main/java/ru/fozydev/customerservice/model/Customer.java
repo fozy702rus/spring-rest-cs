@@ -1,5 +1,6 @@
 package ru.fozydev.customerservice.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -41,7 +42,7 @@ public class Customer {
     @JoinColumn(name = "country_guid")
     private Country country;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_details_guid")
     private ContactDetails contactDetails;
 
@@ -50,6 +51,9 @@ public class Customer {
 
         if (customerId == null) {
             customerId = UUID.randomUUID();
+        }
+        if (profileRefId == null) {
+            profileRefId = UUID.randomUUID();
         }
         Instant now = Instant.now();
         createdAt = now;
@@ -139,4 +143,5 @@ public class Customer {
     public void setContactDetails(ContactDetails contactDetails) {
         this.contactDetails = contactDetails;
     }
+
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ru.fozydev.customerservice.dto.operations.CustomerResponseDTO;
 import ru.fozydev.customerservice.model.Customer;
 import java.util.UUID;
 
@@ -22,3 +23,4 @@ public interface CustomerRepository extends JpaRepository<Customer, UUID> {
             Pageable pageable
     );
 }
+// Поиск клиентов с фильтром по имени например ("Ivan" -> будет искать "Ivan" в имени и фамилии) также по стране по UUID если параметры null фильтр не применяется

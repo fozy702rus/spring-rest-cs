@@ -8,6 +8,8 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -20,9 +22,11 @@ public class ContactDetails {
     @Column(name = "contact_details_guid", nullable = false)
     private UUID contactDetailsId;
 
+    @Email
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
+    @Pattern(regexp = "^@([A-Za-z0-9_]{5,32})$")
     @Column(name = "telegram_id")
     private String telegramId;
 

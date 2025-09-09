@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.fozydev.customerservice.dto.CustomerContactDetailsUpdateDTO;
-import ru.fozydev.customerservice.model.Customer;
-import ru.fozydev.customerservice.service.CustomerService;
+import ru.fozydev.customerservice.dto.operations.CustomerCreateRequest;
+import ru.fozydev.customerservice.dto.operations.CustomerResponseDTO;
+import ru.fozydev.customerservice.service.customer.CustomerService;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,17 +32,17 @@ public class CustomerRestController {
     }
 
     @GetMapping
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public List<CustomerResponseDTO> getAllCustomers() {
+        return customerService.getCustomers();
     }
 
     @GetMapping("/{id}")
-    public Optional<Customer> getCustomerById(@PathVariable UUID id) {
+    public CustomerResponseDTO getCustomerById(@PathVariable UUID id) {
         return customerService.getCustomerById(id);
     }
 
     @GetMapping("/search")
-    public Page<Customer> searchCustomers(
+    public Page<CustomerResponseDTO> searchCustomers(
             @RequestParam(required = false) String fullName,
             @RequestParam(required = false) UUID countryId,
             @PageableDefault(size = 25, sort = "country.name") Pageable pageable) {
@@ -50,13 +50,12 @@ public class CustomerRestController {
     }
 
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer customer) {
-        return customerService.createCustomer(customer);
+    public CustomerResponseDTO createCustomer(@RequestBody CustomerCreateRequest dto) {
+        return customerService.createCustomer(dto);
     }
 
     @PutMapping("/{id}")
-    public Customer updateCustomer(@PathVariable UUID id,
-                                   @RequestBody CustomerContactDetailsUpdateDTO dto) {
+    public CustomerResponseDTO updateCustomer(@PathVariable UUID id, @RequestBody CustomerCreateRequest dto) {
         return customerService.updateCustomer(id, dto);
     }
 }
