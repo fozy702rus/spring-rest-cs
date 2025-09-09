@@ -5,22 +5,7 @@
           http://www.liquibase.org/xml/ns/dbchangelog
           http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="DAVLET">
-<!--        <insert tableName="country">-->
-<!--            <column name="country_guid" value="d290f1ee-6c54-4b01-90e6-d701748f0851"/>-->
-<!--            <column name="code" value="USA"/>-->
-<!--            <column name="name" value="United States"/>-->
-<!--            <column name="created_at" valueDate="2025-09-07T00:00:00Z"/>-->
-<!--            <column name="updated_at" valueDate="2025-09-07T00:00:00Z"/>-->
-<!--        </insert>-->
-
-<!--        <insert tableName="country">-->
-<!--            <column name="country_guid" value="831f0622-cb09-4f24-83cf-e02bdf0075f5"/>-->
-<!--            <column name="code" value="RUS"/>-->
-<!--            <column name="name" value="Russia"/>-->
-<!--            <column name="created_at" valueDate="2025-09-07T00:00:00Z"/>-->
-<!--            <column name="updated_at" valueDate="2025-09-07T00:00:00Z"/>-->
-<!--        </insert>-->
-    </changeSet>
+<!--    <changeSet id="1" author="DAVLET">-->
+<!--    </changeSet>-->
 
 </databaseChangeLog>

@@ -35,12 +35,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerResponseDTO> getCustomers() {
+
         List<Customer> customers = customerRepository.findAll();
         return customerMapper.toResponseList(customers);
     }
 
     @Override
     public CustomerResponseDTO getCustomerById(UUID id) {
+
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer with id " + id + " not found"));
         return customerMapper.toResponse(customer);
@@ -48,6 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponseDTO createCustomer(CustomerCreateRequest dto) {
+
         // customer (имя и фамилия приходит из маппера)
         Customer customer = customerMapper.toCustomer(dto);
 
@@ -100,8 +103,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<CustomerResponseDTO> searchCustomers(String fullName, UUID countryId, Pageable pageable) {
+
         Page<Customer> customersPage = customerRepository.searchCustomers(fullName, countryId, pageable);
         return customersPage.map(customerMapper::toResponse);
     }
-
 }

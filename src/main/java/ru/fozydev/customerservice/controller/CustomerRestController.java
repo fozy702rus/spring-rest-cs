@@ -17,7 +17,6 @@ import ru.fozydev.customerservice.dto.operations.CustomerResponseDTO;
 import ru.fozydev.customerservice.service.customer.CustomerService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
