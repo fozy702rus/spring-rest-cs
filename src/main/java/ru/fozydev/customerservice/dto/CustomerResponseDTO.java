@@ -1,14 +1,15 @@
-package ru.fozydev.customerservice.dto.operations;
-
-import java.util.UUID;
+package ru.fozydev.customerservice.dto;
 
 public class CustomerResponseDTO {
 
     private String name;
     private String surname;
-    private UUID countryId;
+
     private String email;
     private String telegramId;
+
+    private String countryName;
+    private String countryCode;
 
     public String getName() {
         return name;
@@ -26,14 +27,6 @@ public class CustomerResponseDTO {
         this.surname = surname;
     }
 
-    public UUID getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(UUID countryId) {
-        this.countryId = countryId;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -48,5 +41,21 @@ public class CustomerResponseDTO {
 
     public void setTelegramId(String telegramId) {
         this.telegramId = telegramId;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 }

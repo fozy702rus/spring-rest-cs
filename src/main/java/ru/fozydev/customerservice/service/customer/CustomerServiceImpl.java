@@ -5,106 +5,82 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.fozydev.customerservice.dto.operations.CustomerCreateRequest;
-import ru.fozydev.customerservice.mapper.customer.CustomerMapper;
+import ru.fozydev.customerservice.command.CreateCustomerCommand;
+import ru.fozydev.customerservice.command.UpdateCustomerCommand;
 import ru.fozydev.customerservice.model.ContactDetails;
 import ru.fozydev.customerservice.model.Country;
 import ru.fozydev.customerservice.model.Customer;
 import ru.fozydev.customerservice.repository.CountryRepository;
 import ru.fozydev.customerservice.repository.CustomerRepository;
-import ru.fozydev.customerservice.dto.operations.CustomerResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @Transactional
 public class CustomerServiceImpl implements CustomerService {
 
-    private CustomerRepository customerRepository;
-    private CountryRepository countryRepository;
-    private CustomerMapper customerMapper;
+    private final CustomerRepository customerRepository;
+    private final CountryRepository countryRepository;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository, CountryRepository countryRepository, CustomerMapper customerMapper) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CountryRepository countryRepository) {
         this.customerRepository = customerRepository;
         this.countryRepository = countryRepository;
-        this.customerMapper = customerMapper;
     }
 
     @Override
-    public List<CustomerResponseDTO> getCustomers() {
-
-        List<Customer> customers = customerRepository.findAll();
-        return customerMapper.toResponseList(customers);
+    public List<Customer> getCustomers() {
+        return customerRepository.findAll();
     }
 
     @Override
-    public CustomerResponseDTO getCustomerById(UUID id) {
-
-        Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Customer with id " + id + " not found"));
-        return customerMapper.toResponse(customer);
+    public Customer getCustomerById(UUID customerId) {
+        return customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer with id " + customerId + " not found"));
     }
 
     @Override
-    public CustomerResponseDTO createCustomer(CustomerCreateRequest dto) {
+    public Customer createCustomer(CreateCustomerCommand command) {
 
-        // customer (имя и фамилия приходит из маппера)
-        Customer customer = customerMapper.toCustomer(dto);
+        Customer customer = new Customer();
+        customer.setName(command.name());
+        customer.setSurname(command.surname());
 
-        // country
-        Country country = countryRepository.findById(dto.getCountryDTO().getCountryId())
-                .orElseThrow(() -> new RuntimeException("Country with id " + dto.getCountryDTO().getCountryId() + " not found"));
+        Country country = countryRepository.findById(command.countryId())
+                .orElseThrow(() -> new RuntimeException("Country with id " + command.countryId()+ " not found"));
         customer.setCountry(country);
 
-        // contactDetails
         ContactDetails contactDetails = new ContactDetails();
-        contactDetails.setEmail(dto.getContactDetailsDTO().getEmail());
-        contactDetails.setTelegramId(dto.getContactDetailsDTO().getTelegramId());
+        contactDetails.setEmail(command.email());
+        contactDetails.setTelegramId(command.telegramId());
         customer.setContactDetails(contactDetails);
 
-        Customer saved = customerRepository.save(customer);
-
-        return customerMapper.toResponse(saved);
-        // отправлять вложенный JSON
+        return customerRepository.save(customer);
     }
 
     @Override
-    public CustomerResponseDTO updateCustomer(UUID customerId, CustomerCreateRequest dto) {
+    public Customer updateCustomer(UUID customerId, UpdateCustomerCommand command) {
 
-        // ищем по id нуба
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer with id" + customerId + " not found"));
-        // customer info
-        if (dto.getCustomerDTO() != null) {
-            Optional.ofNullable(dto.getCustomerDTO().getName()).ifPresent(customer::setName);
-            Optional.ofNullable(dto.getCustomerDTO().getSurname()).ifPresent(customer::setSurname);
-        }
-        // country info
-        if (dto.getCountryDTO() != null) {
-            Optional.ofNullable(dto.getCountryDTO().getCountryId()).ifPresent(countryId -> {
-                Country country = countryRepository.findById(countryId)
-                        .orElseThrow(() -> new RuntimeException("Country with id" + countryId + " not found"));
-                customer.setCountry(country);
-            });
-        }
-        // contactDetails info
-        if (dto.getContactDetailsDTO() != null) {
-            ContactDetails contactDetails = customer.getContactDetails();
+                .orElseThrow(() -> new RuntimeException("Customer with id " + customerId + " not found"));
+        if (command.name() != null) customer.setName(command.name());
+        if (command.surname() != null) customer.setSurname(command.surname());
 
-            Optional.ofNullable(dto.getContactDetailsDTO().getEmail()).ifPresent(contactDetails::setEmail);
-            Optional.ofNullable(dto.getContactDetailsDTO().getTelegramId()).ifPresent(contactDetails::setTelegramId);
+        ContactDetails contact = customer.getContactDetails();
+        if (command.email() != null) contact.setEmail(command.email());
+        if (command.telegramId() != null) contact.setTelegramId(command.telegramId());
+
+        if (command.countryId() != null) {
+            Country country = countryRepository.findById(command.countryId())
+                    .orElseThrow(() -> new RuntimeException("Country with id " + command.countryId() + " not found"));
+            customer.setCountry(country);
         }
-        return customerMapper.toResponse(customer);
-        // отправлять вложенный JSON
+        return customerRepository.save(customer);
     }
 
     @Override
-    public Page<CustomerResponseDTO> searchCustomers(String fullName, UUID countryId, Pageable pageable) {
-
-        Page<Customer> customersPage = customerRepository.searchCustomers(fullName, countryId, pageable);
-        return customersPage.map(customerMapper::toResponse);
+    public Page<Customer> searchCustomers(String fullName, UUID countryId, Pageable pageable) {
+        return customerRepository.searchCustomers(fullName, countryId, pageable);
     }
 }

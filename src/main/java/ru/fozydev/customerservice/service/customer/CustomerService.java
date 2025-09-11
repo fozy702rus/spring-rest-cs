@@ -2,21 +2,22 @@ package ru.fozydev.customerservice.service.customer;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ru.fozydev.customerservice.dto.operations.CustomerCreateRequest;
-import ru.fozydev.customerservice.dto.operations.CustomerResponseDTO;
+import ru.fozydev.customerservice.command.CreateCustomerCommand;
+import ru.fozydev.customerservice.command.UpdateCustomerCommand;
+import ru.fozydev.customerservice.model.Customer;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface CustomerService {
 
-    public List<CustomerResponseDTO> getCustomers();
+    public List<Customer> getCustomers();
 
-    public CustomerResponseDTO getCustomerById(UUID id);
+    public Customer getCustomerById(UUID id);
 
-    public CustomerResponseDTO createCustomer(CustomerCreateRequest dto);
+    public Customer createCustomer(CreateCustomerCommand command);
 
-    public CustomerResponseDTO updateCustomer(UUID customerId, CustomerCreateRequest dto);
+    public Customer updateCustomer(UUID customerId, UpdateCustomerCommand command);
 
-    Page<CustomerResponseDTO> searchCustomers(String fullName, UUID countryId, Pageable pageable);
+    public Page<Customer> searchCustomers(String fullName, UUID countryId, Pageable pageable);
 }

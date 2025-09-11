@@ -1,6 +1,5 @@
 package ru.fozydev.customerservice.controller;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.fozydev.customerservice.dto.operations.CustomerCreateRequest;
-import ru.fozydev.customerservice.dto.operations.CustomerResponseDTO;
-import ru.fozydev.customerservice.service.customer.CustomerService;
-
+import ru.fozydev.customerservice.dto.CustomerCreateRequestDTO;
+import ru.fozydev.customerservice.dto.CustomerResponseDTO;
+import ru.fozydev.customerservice.dto.customer.CustomerDTO;
+import ru.fozydev.customerservice.facade.CustomerFacade;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,38 +23,38 @@ import java.util.UUID;
 @RequestMapping("/customers")
 public class CustomerRestController {
 
-    private CustomerService customerService;
+    private final CustomerFacade customerFacade;
 
     @Autowired
-    public CustomerRestController(CustomerService customerService) {
-        this.customerService = customerService;
+    public CustomerRestController(CustomerFacade customerFacade) {
+        this.customerFacade = customerFacade;
     }
 
     @GetMapping
     public List<CustomerResponseDTO> getAllCustomers() {
-        return customerService.getCustomers();
+        return customerFacade.getCustomersDTO();
     }
 
     @GetMapping("/{id}")
-    public CustomerResponseDTO getCustomerById(@PathVariable UUID id) {
-        return customerService.getCustomerById(id);
-    }
-
-    @GetMapping("/search")
-    public Page<CustomerResponseDTO> searchCustomers(
-            @RequestParam(required = false) String fullName,
-            @RequestParam(required = false) UUID countryId,
-            @PageableDefault(size = 25, sort = "country.name") Pageable pageable) {
-        return customerService.searchCustomers(fullName, countryId, pageable);
+    public CustomerResponseDTO getCustomerById(@PathVariable("id") UUID customerId) {
+        return customerFacade.getCustomerDTO(customerId);
     }
 
     @PostMapping
-    public CustomerResponseDTO createCustomer(@Valid @RequestBody CustomerCreateRequest dto) {
-        return customerService.createCustomer(dto);
+    public CustomerResponseDTO createCustomer(@RequestBody CustomerCreateRequestDTO dto) {
+        return customerFacade.createCustomer(dto);
     }
 
     @PutMapping("/{id}")
-    public CustomerResponseDTO updateCustomer(@PathVariable UUID id, @RequestBody CustomerCreateRequest dto) {
-        return customerService.updateCustomer(id, dto);
+    public CustomerResponseDTO updateCustomer(@PathVariable("id") UUID id, @RequestBody CustomerCreateRequestDTO dto) {
+        return customerFacade.updateCustomer(id, dto);
+    }
+
+    @GetMapping("/search")
+    public Page<CustomerDTO> searchCustomers(
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) UUID countryId,
+            @PageableDefault(size = 25, sort = "country.name") Pageable pageable) {
+        return customerFacade.searchCustomers(fullName, countryId, pageable);
     }
 }
