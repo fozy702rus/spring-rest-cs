@@ -1,8 +1,7 @@
-package ru.fozydev.customerservice.dto;
+package ru.fozydev.customerservice.dto.customer;
 
 import ru.fozydev.customerservice.dto.contactdetails.ContactDetailsDTO;
 import ru.fozydev.customerservice.dto.country.CountryDTO;
-import ru.fozydev.customerservice.dto.customer.CustomerDTO;
 
 public class CustomerRequestDTO {
 

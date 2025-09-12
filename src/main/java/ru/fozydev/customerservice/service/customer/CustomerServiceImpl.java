@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(UUID customerId) {
         return customerRepository.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException(EntityNames.Customer, customerId);
+                .orElseThrow(() -> new EntityNotFoundException(EntityNames.Customer, customerId));
     }
 
     @Override

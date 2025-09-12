@@ -2,8 +2,7 @@ package ru.fozydev.customerservice.mapper.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.fozydev.customerservice.dto.CustomerResponseDTO;
-import ru.fozydev.customerservice.dto.customer.CustomerDTO;
+import ru.fozydev.customerservice.dto.customer.CustomerResponseDTO;
 import ru.fozydev.customerservice.model.Customer;
 
 import java.util.List;
@@ -16,10 +15,6 @@ public class CustomerConverter {
     @Autowired
     public CustomerConverter(CustomerDtoMapper customerDtoMapper) {
         this.customerDtoMapper = customerDtoMapper;
-    }
-
-    public CustomerDTO toDto(Customer customer) {
-        return customerDtoMapper.toDto(customer);
     }
 
     public CustomerResponseDTO toResponseDTO(Customer customer) {

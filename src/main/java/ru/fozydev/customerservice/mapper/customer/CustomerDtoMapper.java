@@ -2,16 +2,13 @@ package ru.fozydev.customerservice.mapper.customer;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.fozydev.customerservice.dto.CustomerResponseDTO;
-import ru.fozydev.customerservice.dto.customer.CustomerDTO;
+import ru.fozydev.customerservice.dto.customer.CustomerResponseDTO;
 import ru.fozydev.customerservice.model.Customer;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CustomerDtoMapper {
-
-    CustomerDTO toDto(Customer customer);
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "surname", target = "surname")

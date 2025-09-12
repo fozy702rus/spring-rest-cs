@@ -1,4 +1,4 @@
-package ru.fozydev.customerservice.dto;
+package ru.fozydev.customerservice.dto.customer;
 
 public class CustomerResponseDTO {
 
