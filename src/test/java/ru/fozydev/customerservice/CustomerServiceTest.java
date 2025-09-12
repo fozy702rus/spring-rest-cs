@@ -8,7 +8,7 @@ import ru.fozydev.customerservice.repository.CountryRepository;
 import ru.fozydev.customerservice.repository.CustomerRepository;
 import ru.fozydev.customerservice.service.customer.CustomerServiceImpl;
 
-@ExtendWith(MockitoExtension.class) // подключаем мокито
+@ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
 
         @Mock

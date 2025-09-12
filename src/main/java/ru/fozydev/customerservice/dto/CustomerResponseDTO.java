@@ -4,10 +4,8 @@ public class CustomerResponseDTO {
 
     private String name;
     private String surname;
-
     private String email;
     private String telegramId;
-
     private String countryName;
     private String countryCode;
 

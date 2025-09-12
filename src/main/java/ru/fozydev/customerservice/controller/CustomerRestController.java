@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.fozydev.customerservice.dto.CustomerCreateRequestDTO;
+import ru.fozydev.customerservice.dto.CustomerRequestDTO;
 import ru.fozydev.customerservice.dto.CustomerResponseDTO;
-import ru.fozydev.customerservice.dto.customer.CustomerDTO;
 import ru.fozydev.customerservice.facade.CustomerFacade;
 import java.util.List;
 import java.util.UUID;
@@ -41,17 +40,17 @@ public class CustomerRestController {
     }
 
     @PostMapping
-    public CustomerResponseDTO createCustomer(@RequestBody CustomerCreateRequestDTO dto) {
+    public CustomerResponseDTO createCustomer(@RequestBody CustomerRequestDTO dto) {
         return customerFacade.createCustomer(dto);
     }
 
     @PutMapping("/{id}")
-    public CustomerResponseDTO updateCustomer(@PathVariable("id") UUID id, @RequestBody CustomerCreateRequestDTO dto) {
+    public CustomerResponseDTO updateCustomer(@PathVariable("id") UUID id, @RequestBody CustomerRequestDTO dto) {
         return customerFacade.updateCustomer(id, dto);
     }
 
     @GetMapping("/search")
-    public Page<CustomerDTO> searchCustomers(
+    public Page<CustomerResponseDTO> searchCustomers(
             @RequestParam(required = false) String fullName,
             @RequestParam(required = false) UUID countryId,
             @PageableDefault(size = 25, sort = "country.name") Pageable pageable) {
