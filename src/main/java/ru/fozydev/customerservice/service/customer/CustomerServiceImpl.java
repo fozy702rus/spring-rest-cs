@@ -7,11 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.fozydev.customerservice.command.CreateCustomerCommand;
 import ru.fozydev.customerservice.command.UpdateCustomerCommand;
+import ru.fozydev.customerservice.exceptions.EntityNotFoundException;
 import ru.fozydev.customerservice.model.ContactDetails;
 import ru.fozydev.customerservice.model.Country;
 import ru.fozydev.customerservice.model.Customer;
 import ru.fozydev.customerservice.repository.CountryRepository;
 import ru.fozydev.customerservice.repository.CustomerRepository;
+import ru.fozydev.customerservice.util.EntityNames;
+import ru.fozydev.customerservice.util.RepositoryUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,20 +40,19 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(UUID customerId) {
         return customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer with id " + customerId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException(EntityNames.Customer, customerId);
     }
 
     @Override
     public Customer createCustomer(CreateCustomerCommand command) {
-
+        // customer
         Customer customer = new Customer();
         customer.setName(command.name());
         customer.setSurname(command.surname());
-
-        Country country = countryRepository.findById(command.countryId())
-                .orElseThrow(() -> new RuntimeException("Country with id " + command.countryId()+ " not found"));
+        // country
+        Country country = RepositoryUtils.findByIdOrThrow(countryRepository, command.countryId(), EntityNames.Country);
         customer.setCountry(country);
-
+        // contact
         ContactDetails contactDetails = new ContactDetails();
         contactDetails.setEmail(command.email());
         contactDetails.setTelegramId(command.telegramId());
@@ -61,21 +63,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer updateCustomer(UUID customerId, UpdateCustomerCommand command) {
-
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer with id " + customerId + " not found"));
+        // customer
+        Customer customer = RepositoryUtils.findByIdOrThrow(customerRepository, customerId, EntityNames.Customer);
         if (command.name() != null) customer.setName(command.name());
         if (command.surname() != null) customer.setSurname(command.surname());
-
+        // country
+        if (command.countryId() != null) {
+            Country country = RepositoryUtils.findByIdOrThrow(countryRepository, command.countryId(), EntityNames.Country);
+            customer.setCountry(country);
+        }
+        // contact
         ContactDetails contact = customer.getContactDetails();
         if (command.email() != null) contact.setEmail(command.email());
         if (command.telegramId() != null) contact.setTelegramId(command.telegramId());
 
-        if (command.countryId() != null) {
-            Country country = countryRepository.findById(command.countryId())
-                    .orElseThrow(() -> new RuntimeException("Country with id " + command.countryId() + " not found"));
-            customer.setCountry(country);
-        }
         return customerRepository.save(customer);
     }
 
